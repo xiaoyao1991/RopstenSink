@@ -81,4 +81,4 @@ RopstenFaucet.prototype.waitForDonationToSettle = function(address) {
   });
 }
 
-module.exports.RopstenFaucet = RopstenFaucet;
+module.exports = RopstenFaucet;

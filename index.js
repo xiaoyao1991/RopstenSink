@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const program = require('commander');
-const RopstenFaucet = require('./src/faucetApi').RopstenFaucet;
+const RopstenFaucet = require('./src/faucetApi');
 
 program
   .arguments('<address> <numEthers> <httpProvider>')
