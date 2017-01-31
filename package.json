@@ -1,0 +1,20 @@
+{
+  "name": "sink",
+  "version": "1.0.0",
+  "description": "A sink to Ropsten Faucet",
+  "main": "index.js",
+  "bin": {
+    "sink": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "xiaoyao",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "ethereumjs-util": "^5.0.1",
+    "superagent": "^3.4.0",
+    "web3": "^0.18.2"
+  }
+}
