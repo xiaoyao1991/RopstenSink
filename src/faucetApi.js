@@ -1,10 +1,11 @@
 var request = require('superagent');
 var Web3 = require('web3');
 
-function RopstenFaucet(httpProvider) {
+function RopstenFaucet(httpProvider, verbose) {
   this.ENDPOINT_PREFIX = "http://faucet.ropsten.be:3001/donate/";
   this.DRIP_RATE = 7000;
   this.web3 = new Web3(new Web3.providers.HttpProvider(httpProvider));
+  this.verbose = verbose
 }
 
 RopstenFaucet.prototype.sendOneEther = function(address, callback) {
@@ -14,7 +15,7 @@ RopstenFaucet.prototype.sendOneEther = function(address, callback) {
       if (err) {
         console.error("Error sending ether: ", err);
       } else if (resp.body.amount > 0) {
-        console.log("Sending ether...");
+        console.log("Sending ether to %s...", address);
         callback(address);
       } else {
         console.log("What happened?! ", resp.body);
@@ -52,9 +53,11 @@ RopstenFaucet.prototype.funnel = function(from, to) {
 RopstenFaucet.prototype.waitForDonationToSettle = function(callback) {
   var _this = this;
   return function(address) {
-    console.log("Waiting for the 1 ether donation to %s to settle...", address);
+    if (_this.verbose) {
+      console.log("Waiting for the 1 ether donation to %s to settle...", address);
+    }
+    
     if (_this.web3.eth.getBalance(address).toNumber() < _this.web3.toWei(1, "ether")) {
-      console.log("Account %s hasn't yet received the donation...", address);
       setTimeout(function() {
         _this.waitForDonationToSettle(callback)(address);
       }, 5000);
