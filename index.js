@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
 const program = require('commander');
+const RopstenFaucet = require('./src/faucetApi').RopstenFaucet;
 
 program
-    .arguments('<address>')
-    .arguments('<numEthers>')
-    .action(function(file) {
-      console.log('user: %s pass: %s file: %s',
-      program.username, program.password, file);
+    .arguments('<address> <numEthers> <httpProvider>')
+    .action(function(address, numEthers, httpProvider) {
+      var faucet = new RopstenFaucet(httpProvider);
+      faucet.sendEthers(address, numEthers);
     })
     .parse(process.argv);

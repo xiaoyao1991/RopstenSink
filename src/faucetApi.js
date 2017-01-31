@@ -31,7 +31,7 @@ RopstenFaucet.prototype.sendEthers = function(address, numEthers) {
         _this.sendOneEther(account, _this.waitForDonationToSettle(_this.funnel(account, address)));
       }
     };
-    console.log("Scheduled to ask for 1 ether to " + newAccount + " in " + i*this.DRIP_RATE);
+    console.log("Scheduled to ask for 1 ether to %s in %s", newAccount, i*this.DRIP_RATE);
     setTimeout(donateFn(newAccount), i*_this.DRIP_RATE+1);
   }
 }
@@ -39,7 +39,7 @@ RopstenFaucet.prototype.sendEthers = function(address, numEthers) {
 RopstenFaucet.prototype.funnel = function(from, to) {
   var _this = this;
   return function() {
-    console.log("Funneling 1 ether from " + from + " to " + to);
+    console.log("Funneling 1 ether from %s to %s", from, to);
     _this.web3.personal.unlockAccount(from, "");
     return _this.web3.eth.sendTransaction({
       from: from,
@@ -52,16 +52,14 @@ RopstenFaucet.prototype.funnel = function(from, to) {
 RopstenFaucet.prototype.waitForDonationToSettle = function(callback) {
   var _this = this;
   return function(address) {
-    console.log("Waiting for the 1 ether donation to " + address + " to settle...");
+    console.log("Waiting for the 1 ether donation to %s to settle...", address);
     if (_this.web3.eth.getBalance(address).toNumber() < _this.web3.toWei(1, "ether")) {
-      console.log("Account " + address + " hasn't yet received the donation..." + _this.web3.eth.getBalance(address).toNumber());
+      console.log("Account %s hasn't yet received the donation...", address);
       setTimeout(function() {
         _this.waitForDonationToSettle(callback)(address);
       }, 5000);
     } else {
-      console.log("Account " + address + " has received the donation! " + _this.web3.eth.getBalance(address).toNumber());
       if (callback) {
-        console.log("Calling callback");
         callback();
       }
     }
