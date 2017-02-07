@@ -20,6 +20,9 @@ RopstenFaucet.prototype.sendOneEther = function(address) {
           reject(err);
         } else if (resp.body.amount > 0) {
           console.log("Sending ether to %s...", address);
+          if (_this.verbose) {
+            console.log(resp.body);
+          }
           fulfill();
         } else {
           console.log("What happened?! ", resp.body);
